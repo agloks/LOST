@@ -18,8 +18,12 @@ Distributed under the Creative Commons license - Attribution-NonCommercial 4.0 I
 Contributing
 This is a free software, feel free to contribute in any way you want
 
-Fork it (https://github.com/agloks/LOST)
-Create your feature branch (git checkout -b feature/fooBar)
-Commit your changes (git commit -am 'Add some fooBar')
-Push to the branch (git push origin feature/fooBar)
-Create a new Pull Request
+--> Fork it (https://github.com/agloks/LOST)
+
+--> Create your feature branch (git checkout -b feature/fooBar)
+
+--> Commit your changes (git commit -am 'Add some fooBar')
+
+--> Push to the branch (git push origin feature/fooBar)
+
+--> Create a new Pull Request

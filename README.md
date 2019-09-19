@@ -12,8 +12,10 @@ Rules to play this game:
   2- Then SHOOOOOOOOOOOOOOOOOOOOT
 
   3- You need survive between four - five minutes, it's time of music
-
-Distributed under the Creative Commons license - Attribution-NonCommercial 4.0 International (CC BY-NC 4.0). See CC LICENSE for more information.
+  
+  ![](./Pictures/screen_three)
+  ![](./Pictures/screen_four)
+  ![](./Pictures/screen_two)
 
 Contributing
 This is a free software, feel free to contribute in any way you want
@@ -27,3 +29,5 @@ This is a free software, feel free to contribute in any way you want
 --> Push to the branch (git push origin feature/fooBar)
 
 --> Create a new Pull Request
+
+Distributed under the Creative Commons license - Attribution-NonCommercial 4.0 International (CC BY-NC 4.0). See CC LICENSE for more information.

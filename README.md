@@ -3,7 +3,7 @@
 "LOST" is a game build in HTML canvas, CSS and Javascript.
 
 Installation
-Clone or download this project, open the index.html file in your browser and have Fun.
+Clone or download this project, open the index.html file in your browser or acess this link https://agloks.github.io/LOST/
 
 Rules to play this game:
 

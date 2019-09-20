@@ -18,11 +18,11 @@ var endGame = false
 var start = false
 //sons do jogo
 var gunSound = new Audio("./Songs/gunshot.wav")
-gunSound.volume = 0.35
+gunSound.volume = 0.20
 var backgroundSound = new Audio("./Songs/landscape.mp3")
-backgroundSound.volume = 0.84
+backgroundSound.volume = 0.73
 var ghostPage = new Audio("./Songs/ghostBegin.wav")
-ghostPage.volume = 1
+ghostPage.volume = 0.80
 
 //cor do olho variavel rosto
 var color = "black"
@@ -300,7 +300,7 @@ canvasObj.onclick = (e) => {
     if(endGame === true) {
         setInterval(() => {
             if (mouse.posX < width && mouse.posY < height) {window.location.reload()}
-        },10000)
+        },8500)
     }
 }
 
@@ -326,6 +326,30 @@ function seconds (secondsCount) {
       secondsTotal = 0
     }
     return `${minutesActual} : ${(secondsTotal < 10) ? '0'+secondsTotal.toString() : secondsTotal}` // seconds
+}
+
+
+function workMonsters(option = null, quanty = 0 ,level = 0, change = "size") {
+    if(option === "kill"){
+        for(let k = 0; k < allMonster.length; k++) {
+            allMonster[k].kill()
+        }
+    }
+    if(option === "invocation") {
+        allMonster[quanty].setLevelSize(change,level) 
+        allMonster[quanty].invcocation(allMonster[quanty].clickado,false,color) 
+    }
+    if(change === "speed") {
+        allMonster[quanty].setLevelSpeed(change,level)
+    }
+    if(option === "resetCall") {
+        for(let k = 0; k < allMonster.length; k++) {
+            allMonster[k].call = 0
+            allMonster[k].callSpeed = 0
+            allMonster[k].levelSpeed = 1
+            allMonster[k].levelSize = 1
+        }
+    }
 }
 
 
@@ -460,29 +484,6 @@ var opacity = 0.0
 var opacityStart = 1
 var choice = 0
 
-function workMonsters(option = null, quanty = 0 ,level = 0, change = "size") {
-    if(option === "kill"){
-        for(let k = 0; k < allMonster.length; k++) {
-            allMonster[k].kill()
-        }
-    }
-    if(option === "invocation") {
-        allMonster[quanty].setLevelSize(change,level) 
-        allMonster[quanty].invcocation(allMonster[quanty].clickado,false,color) 
-    }
-    if(change === "speed") {
-        allMonster[quanty].setLevelSpeed(change,level)
-    }
-    if(option === "resetCall") {
-        for(let k = 0; k < allMonster.length; k++) {
-            allMonster[k].call = 0
-            allMonster[k].callSpeed = 0
-            allMonster[k].levelSpeed = 1
-            allMonster[k].levelSize = 1
-        }
-    }
-}
-
 
 function render() {
     
@@ -538,7 +539,7 @@ function render() {
             workMonsters(null, 0 , 4, "speed")
         }
         else if((secondsTotal > 20 && secondsTotal < 40 ) && minutesActual === 0) {
-            backgroundSound.volume = 0.90
+            backgroundSound.volume = 0.79
             ghostPage.pause()
             //permitir setar atribuito
             if(choice === 0) {
@@ -564,6 +565,7 @@ function render() {
         }
         else if(secondsTotal > 40 && minutesActual < 1) {
             //permitir setar atribuito
+            backgroundSound.volume = 0.81
             if(choice === 1) {
                 workMonsters("resetCall")
                 choice += 1
@@ -580,6 +582,7 @@ function render() {
             workMonsters(null, 1 , 10, "speed")
         }
         else if((secondsTotal > 0 && minutesActual === 1) && (secondsTotal < 42  && minutesActual === 1)) {
+            backgroundSound.volume = 0.84
             //permitir setar atribuito
             if(choice === 2) {
                 workMonsters("resetCall")
@@ -601,6 +604,7 @@ function render() {
             workMonsters(null, 2 , 7, "speed")
         }
         else if(secondsTotal > 42 && minutesActual === 1) {
+            backgroundSound.volume = 0.90
             if(choice === 3){
                 workMonsters("resetCall")
                 choice += 1
@@ -609,7 +613,7 @@ function render() {
             color = "black"
 
             //monster one
-            workMonsters("invocation", 0 , 8, "size")
+            workMonsters("invocation", 0 , 9, "size")
             workMonsters(null, 0 , 4, "speed")
 
             //monster two
@@ -631,9 +635,13 @@ function render() {
             //monster six
             workMonsters("invocation", 5 , 14, "size")
             workMonsters(null, 5 , 3, "speed")
+
+            //monster seven
+            workMonsters("invocation", 6 , 14, "size")
+            workMonsters(null, 6 , 3, "speed")
         }
         else if( (secondsTotal > 0 && secondsTotal < 58) && minutesActual === 2) {
-            backgroundSound.volume = 1
+            backgroundSound.volume = 0.95
             //permitir setar atribuito
             if(choice === 4) {
                 workMonsters("resetCall")
@@ -650,11 +658,15 @@ function render() {
 
         }
         else if(secondsTotal < 30 && minutesActual === 3) {
+            backgroundSound.volume = 1
             //permitir setar atribuito
             if(choice === 4) {
                 workMonsters("resetCall")
                 choice += 1
             }
+
+            color = "black"
+
             //monster one
             workMonsters("invocation", 0 , 15, "size")
             workMonsters(null, 0 , 15, "speed")
@@ -682,20 +694,20 @@ function render() {
                 choice += 1
             }
             //monster one
-            workMonsters("invocation", 0 , 50, "size")
+            workMonsters("invocation", 0 , 40, "size")
             workMonsters(null, 0 , 2, "speed")
 
             //monster two
-            workMonsters("invocation", 1 , 12, "size")
+            workMonsters("invocation", 1 , 10, "size")
             workMonsters(null, 1 , 30, "speed")
 
             //monster three
-            workMonsters("invocation", 2 , 28, "size")
-            workMonsters(null, 2 , 3, "speed")
+            workMonsters("invocation", 2 , 10, "size")
+            workMonsters(null, 2 , 30, "speed")
 
              //monster four
-             workMonsters("invocation", 3 , 39, "size")
-             workMonsters(null, 3 , 4, "speed")
+             workMonsters("invocation", 3 , 40, "size")
+             workMonsters(null, 3 , 2, "speed")
  
         }
         else if((secondsTotal > 0 && secondsTotal < 50) && minutesActual === 4) {
@@ -704,12 +716,15 @@ function render() {
                 workMonsters("resetCall")
                 choice += 1
             }
+
+            color = "red"
+
             //monster one
-            workMonsters("invocation", 0 , 20, "size")
+            workMonsters("invocation", 0 , 17, "size")
             workMonsters(null, 0 , 2, "speed")
 
             //monster two
-            workMonsters("invocation", 1 , 20, "size")
+            workMonsters("invocation", 1 , 17, "size")
             workMonsters(null, 1 , 2, "speed")
 
             //monster three
@@ -717,8 +732,8 @@ function render() {
             workMonsters(null, 2 , 12, "speed")
 
              //monster four
-             workMonsters("invocation", 3 , 25, "size")
-             workMonsters(null, 3 , 5, "speed")
+             workMonsters("invocation", 3 , 20, "size")
+             workMonsters(null, 3 , 2, "speed")
  
              //monster five
              workMonsters("invocation", 4 , 10, "size")
@@ -750,6 +765,8 @@ function render() {
                 workMonsters("resetCall")
                 choice += 1
             }
+            
+            color = "white"
             
             //monster one
             workMonsters("invocation", 0 , 59, "size")

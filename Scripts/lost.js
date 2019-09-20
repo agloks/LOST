@@ -19,10 +19,13 @@ var start = false
 //sons do jogo
 var gunSound = new Audio("./Songs/gunshot.wav")
 gunSound.volume = 0.35
-var backgroundSound = new Audio("./Songs/apocalypse_orchestra_pyre.mp3")
+var backgroundSound = new Audio("./Songs/landscape.mp3")
 backgroundSound.volume = 0.84
 var ghostPage = new Audio("./Songs/ghostBegin.wav")
 ghostPage.volume = 1
+
+//cor do olho variavel rosto
+var color = "black"
 
 //tiro
 const RAIO_TIRO = 22
@@ -69,7 +72,7 @@ class Monster {
     }
     
     
-    invcocation (click,reset) {
+    invcocation (click,reset,color) {
 
         let randomMapaPositionX = Math.floor( Math.random() * (width - halfWidth*0.20) )//deixa numa margem de distancia das extremidade
         let randomMapaPositionY = -Math.floor( Math.random() * ((halfHeight-300) - halfHeight*0.20))//menos da metade do mapa, overflow para cima com -
@@ -81,7 +84,7 @@ class Monster {
             this.saveX = randomMapaPositionX
             this.saveY = randomMapaPositionY
 
-            rosto(this.saveX,this.saveY,this.size)
+            rosto(this.saveX,this.saveY,this.size,color)
             this.reset = false
             this.clickado = false
             this.moveX = 0
@@ -99,21 +102,12 @@ class Monster {
             else {
                 this.size += this.levelSize*0.07
             }
-            //quando chegar ao meio
-            // if (this.moveX+this.saveX - display.layerX > -1 && this.moveX+this.saveX - display.layerX < 50 ) {
-            //     this.reset = true
-            //     this.moveX = 0
-            //     this.moveY = 0
-            //     this.saveX = randomMapaPositionX
-            //     this.saveY = randomMapaPositionY
-            // }
-            //camiha até o meio
             if (this.moveX+this.saveX > randomLayerX) {this.moveX -= this.levelSpeed }
             else if (this.moveX+this.saveX < randomLayerX) {this.moveX += this.levelSpeed }
             if (this.moveY > randomLayerY) {this.moveY -= this.levelSpeed  }
             else if (this.moveY < randomLayerY) {this.moveY += this.levelSpeed }
 
-            rosto( this.saveX + this.moveX , this.saveY + this.moveY , this.size )
+            rosto( this.saveX + this.moveX , this.saveY + this.moveY , this.size , color)
         }
     }
 }
@@ -185,7 +179,24 @@ var monster_three = new Monster()
 var monster_four = new Monster()
 var monster_five = new Monster()
 var monster_six = new Monster()
-var allMonster = [monster,monster_two,monster_three,monster_four,monster_five,monster_six]
+var monster_seven = new Monster()
+var monster_eight = new Monster()
+var monster_nine = new Monster()
+var monster_ten = new Monster()
+
+var allMonster = 
+[
+    monster,
+    monster_two,
+    monster_three,
+    monster_four,
+    monster_five,
+    monster_six,
+    monster_seven,
+    monster_eight,
+    monster_nine,
+    monster_ten,
+]
 
 //------------------------------------------------- MAPA -----------------------------------------------------------------------
 
@@ -323,12 +334,14 @@ document.addEventListener("mousemove",onMouseMove)
 
 //-------------------------------------------- DESENHOS -----------------------------------------------------------
 
-function rosto (x,y,s) {
+function rosto (x,y,s,color = "black") {
 
     let gradient = draw.createLinearGradient(0, 0, width, 0)
     gradient.addColorStop("0", "magenta")
     gradient.addColorStop("0.2", "white")
-    gradient.addColorStop("0.4", "green")
+    gradient.addColorStop("0.6","yellow")
+    gradient.addColorStop("0.5","purple")
+    gradient.addColorStop("0.3", "green")
     gradient.addColorStop("0.7","red")
     gradient.addColorStop("0.8", "orange")
     gradient.addColorStop("1.0", "red")
@@ -377,6 +390,7 @@ function rosto (x,y,s) {
     draw.beginPath()//olho direito
     draw.arc(x+17+s/3,y-8-s/3,14+s/4,0,Math.PI*2)
     draw.lineWidth = 4
+    draw.fillStyle = color
     draw.fill()
     draw.stroke()
     draw.closePath()
@@ -454,7 +468,7 @@ function workMonsters(option = null, quanty = 0 ,level = 0, change = "size") {
     }
     if(option === "invocation") {
         allMonster[quanty].setLevelSize(change,level) 
-        allMonster[quanty].invcocation(allMonster[quanty].clickado,false) 
+        allMonster[quanty].invcocation(allMonster[quanty].clickado,false,color) 
     }
     if(change === "speed") {
         allMonster[quanty].setLevelSpeed(change,level)
@@ -507,18 +521,23 @@ function render() {
         }
 
         //faz o rastro do fanstama
-        if(fpsByTime === 4 || monster.clickado === true || monster_two.clickado === true || monster_three.clickado === true || monster_four.clickado === true || monster_five.clickado === true || monster_six.clickado === true) {
+        if(fpsByTime === 4 || monster.clickado === true || monster_two.clickado === true ||
+             monster_three.clickado === true || monster_four.clickado === true ||
+              monster_five.clickado === true || monster_six.clickado === true ||
+              monster_seven.clickado === true || monster_eight.clickado === true ||
+              monster_nine.clickado === true || monster_ten.clickado === true) {
             clear("rastro")
             fpsByTime = 0
         }
+
 // --------------------------- TIME NIVEL ----------------------------------------------------------------------------------------
 
-        if(secondsTotal > 1 && secondsTotal < 15 && minutesActual === 0) {
+        if( (secondsTotal > 1 && secondsTotal < 20) && minutesActual === 0) {
             //monster one
-            workMonsters("invocation", 0 , 20, "size")
+            workMonsters("invocation", 0 , 10, "size")
             workMonsters(null, 0 , 4, "speed")
         }
-        else if(secondsTotal > 15 && secondsTotal < 42 && minutesActual === 0) {
+        else if((secondsTotal > 20 && secondsTotal < 40 ) && minutesActual === 0) {
             backgroundSound.volume = 0.90
             ghostPage.pause()
             //permitir setar atribuito
@@ -528,27 +547,29 @@ function render() {
             }
             
             //monster one
-            workMonsters("invocation", 0 , 20, "size")
+            workMonsters("invocation", 0 , 16, "size")
             workMonsters(null, 0 , 3, "speed")
 
             //monster two
-            workMonsters("invocation", 1 , 18, "size")
+            workMonsters("invocation", 1 , 16, "size")
             workMonsters(null, 1 , 2, "speed")
 
             //monster three
-            workMonsters("invocation", 2 , 18, "size")
+            workMonsters("invocation", 2 , 17, "size")
             workMonsters(null, 2 , 1, "speed")
 
             //monster four
             workMonsters("invocation", 3 , 18, "size")
             workMonsters(null, 3 , 2, "speed")
         }
-        else if((secondsTotal > 42 && minutesActual < 1)) {
+        else if(secondsTotal > 40 && minutesActual < 1) {
             //permitir setar atribuito
             if(choice === 1) {
                 workMonsters("resetCall")
                 choice += 1
             }
+
+            color = "red"
 
             //monster one
             workMonsters("invocation", 0 , 30, "size")
@@ -558,39 +579,77 @@ function render() {
             workMonsters("invocation", 1 , 30, "size")
             workMonsters(null, 1 , 10, "speed")
         }
-        else if((secondsTotal > 5 && minutesActual === 1) && (secondsTotal < 35 && minutesActual === 1)) {
+        else if((secondsTotal > 0 && minutesActual === 1) && (secondsTotal < 42  && minutesActual === 1)) {
             //permitir setar atribuito
             if(choice === 2) {
                 workMonsters("resetCall")
                 choice += 1
             }
             
+            (seconds % 2 === 0) ? color = "red" : color = "black"
+
             //monster one
-            workMonsters("invocation", 0 , 25, "size")
+            workMonsters("invocation", 0 , 22, "size")
             workMonsters(null, 0 , 9, "speed")
 
             //monster two
-            workMonsters("invocation", 1 , 30, "size")
+            workMonsters("invocation", 1 , 29, "size")
             workMonsters(null, 1 , 8, "speed")
 
             //monster three
-            workMonsters("invocation", 2 , 35, "size")
+            workMonsters("invocation", 2 , 32, "size")
             workMonsters(null, 2 , 7, "speed")
         }
-        else if(secondsTotal > 35 && minutesActual < 2) {
-            backgroundSound.volume = 1
-            //permitir setar atribuito
-            if(choice === 3) {
+        else if(secondsTotal > 42 && minutesActual === 1) {
+            if(choice === 3){
                 workMonsters("resetCall")
                 choice += 1
             }
+
+            color = "black"
+
+            //monster one
+            workMonsters("invocation", 0 , 8, "size")
+            workMonsters(null, 0 , 4, "speed")
+
+            //monster two
+            workMonsters("invocation", 1 , 10, "size")
+            workMonsters(null, 1 , 4, "speed")
+
+            //monster three
+            workMonsters("invocation", 2 , 10, "size")
+            workMonsters(null, 2 , 3, "speed")
+
+            //monster four
+            workMonsters("invocation", 3 , 12, "size")
+            workMonsters(null, 3 , 2, "speed")
+
+            //monster five
+            workMonsters("invocation", 5 , 10, "size")
+            workMonsters(null, 4 , 3, "speed")
+
+            //monster six
+            workMonsters("invocation", 5 , 14, "size")
+            workMonsters(null, 5 , 3, "speed")
+        }
+        else if( (secondsTotal > 0 && secondsTotal < 58) && minutesActual === 2) {
+            backgroundSound.volume = 1
+            //permitir setar atribuito
+            if(choice === 4) {
+                workMonsters("resetCall")
+                choice += 1
+            }
+
+            if (seconds % 3 === 0 && seconds % 5 === 0) {color = "red"}
+            else if(seconds % 3) {color = "black"}
+            else{color = "white"}
             
             //monster one
             workMonsters("invocation", 0 , 51, "size")
             workMonsters(null, 0 , 14, "speed")
 
         }
-        else if(secondsTotal > 10 && minutesActual < 3) {
+        else if(secondsTotal < 30 && minutesActual === 3) {
             //permitir setar atribuito
             if(choice === 4) {
                 workMonsters("resetCall")
@@ -616,7 +675,7 @@ function render() {
              workMonsters("invocation", 4 , 9, "size")
              workMonsters(null, 4 , 21, "speed")
         }
-        else if(secondsTotal > 3 && secondsTotal > 27 && minutesActual === 3) {
+        else if(secondsTotal > 30 && minutesActual <= 3) {
             //permitir setar atribuito
             if(choice === 5) {
                 workMonsters("resetCall")
@@ -638,42 +697,72 @@ function render() {
              workMonsters("invocation", 3 , 39, "size")
              workMonsters(null, 3 , 4, "speed")
  
-             //monster five
-             workMonsters("invocation", 4 , 50, "size")
-             workMonsters(null, 0 , 1, "speed")
         }
-        else if(secondsTotal > 30 && minutesActual === 3) {
+        else if((secondsTotal > 0 && secondsTotal < 50) && minutesActual === 4) {
             //permitir setar atribuito
             if(choice === 6) {
                 workMonsters("resetCall")
                 choice += 1
             }
             //monster one
-            workMonsters("invocation", 0 , 50, "size")
+            workMonsters("invocation", 0 , 20, "size")
             workMonsters(null, 0 , 2, "speed")
 
             //monster two
-            workMonsters("invocation", 1 , 50, "size")
+            workMonsters("invocation", 1 , 20, "size")
             workMonsters(null, 1 , 2, "speed")
 
             //monster three
-            workMonsters("invocation", 2 , 4, "size")
-            workMonsters(null, 2 , 30, "speed")
+            workMonsters("invocation", 2 , 15, "size")
+            workMonsters(null, 2 , 12, "speed")
 
              //monster four
-             workMonsters("invocation", 3 , 4, "size")
-             workMonsters(null, 3 , 35, "speed")
+             workMonsters("invocation", 3 , 25, "size")
+             workMonsters(null, 3 , 5, "speed")
  
              //monster five
-             workMonsters("invocation", 4 , 50, "size")
-             workMonsters(null, 0 , 3, "speed")
+             workMonsters("invocation", 4 , 10, "size")
+             workMonsters(null, 4 , 2, "speed")
+             
+             //monster six
+             workMonsters("invocation", 5 , 10, "size")
+             workMonsters(null, 5 , 2, "speed")
+             
+             //monster seven
+             workMonsters("invocation", 6 , 10, "size")
+             workMonsters(null, 6 , 2, "speed")
+
+             //monster eight
+             workMonsters("invocation", 7 , 12, "size")
+             workMonsters(null, 7 , 2, "speed")
+
+             //monster nine
+             workMonsters("invocation", 8 , 12, "size")
+             workMonsters(null, 8 , 2, "speed")
+
+             //monster ten
+             workMonsters("invocation", 9 , 1, "size")
+             workMonsters(null, 9 , 42, "speed")
+        }
+        else if(minutesActual >= 5) {
+            //permitir setar atribuito
+            if(choice === 5) {
+                workMonsters("resetCall")
+                choice += 1
+            }
+            
+            //monster one
+            workMonsters("invocation", 0 , 59, "size")
+            workMonsters(null, 0 , 20, "speed")
         }
 
 // --------------------------- TIME NIVEL ----------------------------------------------------------------------------------------
 
         //condição de dano recebido
         if( monster.size > 300 || monster_two.size > 300 || monster_three.size > 300 
-            || monster_four.size > 300 || monster_five.size > 300 || monster_six.size > 300) {
+            || monster_four.size > 300 || monster_five.size > 300 || monster_six.size > 300
+            || monster_seven.size > 300 || monster_eight.size > 300 || monster_nine.size > 300
+            || monster_ten.size > 300) {
             document.body.style.background = "white"
             cancelAnimationFrame(idRender)
             life -= 12,5
@@ -687,11 +776,15 @@ function render() {
                 monster_four.invcocation(monster_four.clickado,true)
                 monster_five.invcocation(monster_five.invcocation,true)
                 monster_six.invcocation(monster_six.clickado,true)
+                monster_seven.invcocation(monster_six.clickado,true)
+                monster_eight.invcocation(monster_six.clickado,true)
+                monster_nine.invcocation(monster_six.clickado,true)
+                monster_ten.invcocation(monster_six.clickado,true)
                 } , 105 )
             }    
         }
     
-        //lose game
+    //lose game
     if( life < 1 ){
         endGame = true
         if(opacity < 1){

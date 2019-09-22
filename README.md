@@ -11,7 +11,7 @@ Rules to play this game:
   
   2- Then SHOOOOOOOOOOOOOOOOOOOOT
 
-  3- You need survive between four - five minutes, it's time of music
+  3- You need survive between five - seven minutes, it's time of music
   
   ![](./Pictures/screen_three)
   ![](./Pictures/screen_four)
@@ -30,4 +30,6 @@ This is a free software, feel free to contribute in any way you want
 
 --> Create a new Pull Request
 
-Distributed under the Creative Commons license - Attribution-NonCommercial 4.0 International (CC BY-NC 4.0). See CC LICENSE for more information.
+
+
+### This work is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License. To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/ or send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA. ###
